@@ -1,0 +1,16 @@
+[
+  {
+    "sensor": "TEMPERATURE",
+    "condition": 3,
+    "value": 28,
+    "device": "COOLER",
+    "action": 1
+  },
+  {
+    "sensor": "TEMPERATURE",
+    "condition": 5,
+    "value": 20,
+    "device": "COOLER",
+    "action": 0
+  }
+]
