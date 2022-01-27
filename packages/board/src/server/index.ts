@@ -1,6 +1,8 @@
 import { RequestListener, ServerResponse } from "http";
 import { availableRoutes } from "../consts";
-import { handlers } from "./routes";
+import { handlers } from "./handlers";
+
+const serverPrefix = "[Server]";
 
 const processNotFound: RequestListener = (req, res) => {
   if (!availableRoutes.includes(req.url)) {
@@ -30,13 +32,13 @@ const sendGetRes = (res: ServerResponse, value: any) => {
   res.writeHead(status);
   res.end(answer);
 
-  console.log("[RES] GET", res.req.url, status);
+  console.log(serverPrefix, "== GET =>", res.req.url, status);
 };
 
 const get: RequestListener = (req, res) => {
   if (req.method !== "GET") return;
 
-  console.log("[REQ] GET", req.url);
+  console.log(serverPrefix, "=> GET ==", req.url);
 
   const action = (value: any) => sendGetRes(res, value);
   handlers.get.map((get) => get(req, action));
@@ -45,7 +47,7 @@ const get: RequestListener = (req, res) => {
 const set: RequestListener = (req, res) => {
   if (req.method !== "POST") return;
 
-  console.log("POST", req.url);
+  console.log(serverPrefix, "=> POST ==", req.url);
 };
 
 const listener: RequestListener = (req, res) => {
@@ -59,9 +61,9 @@ const listener: RequestListener = (req, res) => {
 };
 
 export const createServer = () => {
-  console.log("Server started!");
+  console.log(serverPrefix, "Server started!");
 
-  console.log("Routes:", availableRoutes);
+  console.log(serverPrefix, "Routes:", availableRoutes);
 
   return http.createServer(listener).listen(3241);
 };

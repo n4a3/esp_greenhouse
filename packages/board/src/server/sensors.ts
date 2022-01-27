@@ -1,13 +1,6 @@
 import { routes, Sensors } from "../consts";
 import { getAllValues, getValue } from "../board/sensors";
-
-const route: IRoute = (path, action, req) => {
-  const requestedUrl = req.url === "/" + path;
-
-  if (!requestedUrl) return;
-
-  return action();
-};
+import { route } from "./handlers";
 
 const getAll: URoute = (req, resAction) => {
   const action = () => {
@@ -45,7 +38,6 @@ const getBySensor: URoute[] = Object.keys(Sensors).map(
   }
 );
 
-export const handlers = {
-  get: [getAll].concat(getBySensor), // Espruino can't handle rest operator or Array.prototype.call
-  set: [0],
+export const sensors = {
+  get: [getAll, ...getBySensor],
 };
