@@ -6,9 +6,8 @@
     "target": "es5",
     "allowJs": true,
     "moduleResolution": "node",
-    "baseUrl": "src",
     "resolveJsonModule": true,
     "outDir": "dist"
   },
-  "include": ["src"]
+  "include": ["src", "src/static/*.json"]
 }
