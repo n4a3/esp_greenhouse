@@ -1,0 +1,15 @@
+{
+  "wifi": {
+    "station": {
+      "ssid": "",
+      "password": ""
+    },
+    "ap": {
+      "ssid": "ESP_GH_NETWORK",
+      "password": "ESP_GH_12345678",
+      "authMode": "wpa_wpa2",
+      "channel": 3,
+      "hidden": 0
+    }
+  }
+}
