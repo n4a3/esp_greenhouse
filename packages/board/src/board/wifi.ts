@@ -1,4 +1,6 @@
 import wifi from "Wifi";
+import { AuthMode, Config } from "../types/index";
+import { readJSON } from "./json";
 
 const wifiPrefix = "[WiFi]";
 const apPrefix = `${wifiPrefix} [AP]`;
@@ -45,7 +47,7 @@ const connect = (station: Config["wifi"]["station"]) => {
 };
 
 const startWifi = () => {
-  const config: Config = require("../static/config.json");
+  const config: Config = readJSON("config");
 
   if (!config.wifi.station.ssid) {
     console.log(

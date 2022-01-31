@@ -1,4 +1,5 @@
 import { Sensors } from "../consts";
+import { SensorName } from "../types/index";
 
 /** Emulation */
 const analogReadProxy = (q: string) => {

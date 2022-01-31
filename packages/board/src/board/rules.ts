@@ -1,13 +1,21 @@
 import { getValue } from "./sensors";
 import { setValue } from "./devices";
+import { readJSON } from "./json";
+import { Condition, Rule } from "../types/index";
 
-const checkCondition = (
-  sensor: SensorName,
-  condition: Condition,
-  value: number
-) => {
-  const sensorValue = getValue(sensor)[1];
+const rulesPrefix = "[Rules]";
 
+const checkTime = (time: string, condition: Condition) => {
+  // remove after testing
+  return false;
+
+  const { getHours, getMinutes } = new Date();
+  const cT = `${getHours()}:${getMinutes()}`;
+
+  return checkCondition(cT, condition, time);
+};
+
+const checkCondition = <T>(sensorValue: T, condition: Condition, value: T) => {
   switch (condition) {
     case Condition["="]:
       return sensorValue === value;
@@ -27,12 +35,17 @@ const checkCondition = (
     case Condition[">="]:
       return sensorValue >= value;
 
+    case Condition.none:
+      return true;
+
     default:
       return null;
   }
 };
 
-export const initRules = () => {
+export const saveRules = (rules: Rule[]) => {};
+
+const initRules = () => {
   let rules: Rule[] = [];
   let activeRules: { [key: Rule["id"]]: Rule["action"] } = [];
 
@@ -43,11 +56,23 @@ export const initRules = () => {
 
     if (alreadyRunning) return;
 
-    const runAction = checkCondition(rule.sensor, rule.condition, rule.value);
+    let runAction: boolean;
+
+    if (rule.condition === Condition.none) {
+      activeRules[rule.id] = rule.action;
+      setValue(rule.device, rule.action);
+      return;
+    }
+
+    if (rule.sensor === "TIME") {
+      runAction = checkTime(rule.value, rule.condition);
+    } else {
+      const sensorValue = getValue(rule.sensor)[1];
+      runAction = checkCondition(sensorValue, rule.condition, rule.value);
+    }
 
     if (runAction) {
       activeRules[rule.id] = rule.action;
-
       setValue(rule.device, rule.action);
     }
   };
@@ -56,8 +81,10 @@ export const initRules = () => {
     clearInterval(timer);
     timer = null;
 
-    rules = require("../static/rules.json");
+    rules = readJSON("rules");
     rules.forEach(runRule);
+
+    console.log(rulesPrefix, "Rules reloaded!");
   };
 
   const loopRules = () => {
@@ -67,9 +94,13 @@ export const initRules = () => {
     ) as unknown as number;
   };
 
+  console.log(rulesPrefix, "Rules initialized!");
+
   return {
     runRule,
     reloadRules,
     loopRules,
   };
 };
+
+export const rules = initRules();
