@@ -1,10 +1,10 @@
 {
-  "name": "pwa",
-  "short_name": "pwa",
+  "name": "ESP Greenhouse",
+  "short_name": "ESPG",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#fff",
+  "background_color": "#ffffff",
   "theme_color": "#673ab8",
   "icons": [
     {
