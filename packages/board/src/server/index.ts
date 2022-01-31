@@ -3,7 +3,7 @@ import { availableRoutes } from "../consts";
 import { handlers } from "./handlers";
 
 // remove after testing
-import http from "http";
+import * as http from "http";
 
 const serverPrefix = "[Server]";
 

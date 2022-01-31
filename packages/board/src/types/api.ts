@@ -14,7 +14,6 @@ type _WifiConnectParams<T> = T extends "WIFI_CONNECT"
   : never;
 
 export type ApiParams<T extends keyof typeof routes> =
-  | undefined
   | _RuleAddParams<T>
   | _WifiConnectParams<T>;
 
