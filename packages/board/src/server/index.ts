@@ -2,6 +2,9 @@ import { RequestListener, ServerResponse } from "http";
 import { availableRoutes } from "../consts";
 import { handlers } from "./handlers";
 
+// remove after testing
+import http from "http";
+
 const serverPrefix = "[Server]";
 
 const processNotFound: RequestListener = (req, res) => {
@@ -35,27 +38,26 @@ const sendGetRes = (res: ServerResponse, value: any) => {
   console.log(serverPrefix, "== GET =>", res.req.url, status);
 };
 
-const get: RequestListener = (req, res) => {
+const get: (qp: string) => RequestListener = (qp) => (req, res) => {
   if (req.method !== "GET") return;
 
   console.log(serverPrefix, "=> GET ==", req.url);
 
+  const parsed = new URLSearchParams(qp);
+
   const action = (value: any) => sendGetRes(res, value);
-  handlers.get.map((get) => get(req, action));
-};
-
-const set: RequestListener = (req, res) => {
-  if (req.method !== "POST") return;
-
-  console.log(serverPrefix, "=> POST ==", req.url);
+  handlers.map((handler) => handler(req, action, parsed));
 };
 
 const listener: RequestListener = (req, res) => {
-  const url = req.url.at(-1) === "/" ? req.url : req.url + "/";
+  let [url, qp = ""] = req.url.split("?");
+
+  url = url.at(-1) === "/" ? url : url + "/";
   req.url = url;
 
-  get(req, res);
-  set(req, res);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  get(qp)(req, res);
 
   processNotFound(req, res);
 };

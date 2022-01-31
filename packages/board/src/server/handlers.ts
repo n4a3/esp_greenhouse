@@ -1,14 +1,18 @@
-import { sensors } from "./sensors";
+import { IRoute } from "../types/index";
+import { configHandlers } from "./config";
+import { rulesHandlers } from "./rules";
+import { sensorsHandlers } from "./sensors";
 
 export const route: IRoute = (path, action, req) => {
-  const requestedUrl = req.url === "/" + path;
+  const requestedUrl = req.url === path;
 
   if (!requestedUrl) return;
 
   return action();
 };
 
-export const handlers = {
-  get: [...sensors.get],
-  set: [0],
-};
+export const handlers = [
+  ...configHandlers,
+  ...sensorsHandlers,
+  ...rulesHandlers,
+];

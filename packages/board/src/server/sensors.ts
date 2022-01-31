@@ -1,6 +1,7 @@
 import { routes, Sensors } from "../consts";
 import { getAllValues, getValue } from "../board/sensors";
 import { route } from "./handlers";
+import { URoute, SensorName } from "../types/index";
 
 const getAll: URoute = (req, resAction) => {
   const action = () => {
@@ -38,6 +39,4 @@ const getBySensor: URoute[] = Object.keys(Sensors).map(
   }
 );
 
-export const sensors = {
-  get: [getAll, ...getBySensor],
-};
+export const sensorsHandlers = [getAll, ...getBySensor];
