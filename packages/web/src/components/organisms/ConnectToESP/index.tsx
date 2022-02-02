@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Alert, Card, Form, Spinner, Stack } from "react-bootstrap";
-import { findESP, getIP } from "../../../api/findESP";
-import LoadingButton from "../../atoms/LoadingButton";
+
+import LoadingButton from "components/atoms/LoadingButton";
+
+import { findESP, getIP } from "api/findESP";
 
 interface OwnProps {
   onConnect: (ip: string) => void;

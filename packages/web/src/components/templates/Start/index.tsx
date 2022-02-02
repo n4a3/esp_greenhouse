@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Card, Container, Nav, Navbar, NavbarBrand } from "react-bootstrap";
-import { steps } from "../../organisms/FirstSteps";
+
+import { steps } from "components/organisms/FirstSteps";
 
 interface OwnProps {}
 

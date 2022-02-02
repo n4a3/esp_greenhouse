@@ -2,10 +2,12 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Container, Navbar, NavbarBrand } from "react-bootstrap";
 
-import Index from "./routes/index/index";
-import Start from "./components/templates/Start";
+import { routes } from "routes";
 
 const App: React.FC = () => {
+  const renderRoutes = () =>
+    routes.map((R) => <Route key={R.name} path={R.path} element={<R />} />);
+
   return (
     <div>
       <Navbar bg="dark" variant="dark" fixed="top">
@@ -15,11 +17,7 @@ const App: React.FC = () => {
       </Navbar>
 
       <Container style={{ marginTop: "4.5em" }}>
-        <Routes>
-          <Route path="/" element={<Index />} />
-
-          <Route path="/start" element={<Start />} />
-        </Routes>
+        <Routes>{renderRoutes()}</Routes>
       </Container>
     </div>
   );

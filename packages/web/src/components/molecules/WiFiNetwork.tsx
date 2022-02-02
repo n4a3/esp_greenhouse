@@ -1,7 +1,8 @@
-import { WifiNetwork } from "espg-board/src/types/api";
-import { AuthMode } from "espg-board/src/types/index";
 import React, { Fragment } from "react";
 import { Col, Dropdown, ProgressBar, Row } from "react-bootstrap";
+
+import { WifiNetwork } from "espg-board/src/types/api";
+import { AuthMode } from "espg-board/src/types/index";
 
 interface OwnProps {
   onClick?: () => void;

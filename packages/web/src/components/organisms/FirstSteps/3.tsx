@@ -1,8 +1,7 @@
-import { WifiConnectOptionsWithSSID } from "espg-board/src/types/index";
 import React, { useState } from "react";
 import { Button, Collapse, Container, Row, Stack } from "react-bootstrap";
-import LoadingButton from "../../atoms/LoadingButton";
-import ConnectToWiFi from "../ConnectToWiFi";
+
+import ConnectToWiFi from "components/organisms/ConnectToWiFi";
 
 interface OwnProps {
   onDone: () => void;

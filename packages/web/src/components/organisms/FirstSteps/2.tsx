@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Alert, Button, Col, Collapse, Container, Row } from "react-bootstrap";
-import { findESP, getIP } from "../../../api/findESP";
-import LoadingButton from "../../atoms/LoadingButton";
-import ConnectToESP from "../ConnectToESP";
+
+import LoadingButton from "components/atoms/LoadingButton";
+import ConnectToESP from "components/organisms/ConnectToESP";
+
+import { findESP, getIP } from "api/findESP";
 
 interface OwnProps {
   home?: boolean;

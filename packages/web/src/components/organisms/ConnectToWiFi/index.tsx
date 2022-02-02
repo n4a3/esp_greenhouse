@@ -11,11 +11,14 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
+
 import { WifiNetwork } from "espg-board/src/types/api";
-import { getWifis, setWifi } from "../../../api";
-import WiFiNetwork from "../../molecules/WiFiNetwork";
 import { AuthMode } from "espg-board/src/types/index";
-import LoadingButton from "../../atoms/LoadingButton";
+
+import WiFiNetwork from "components/molecules/WiFiNetwork";
+import LoadingButton from "components/atoms/LoadingButton";
+
+import { getWifis, setWifi } from "api";
 
 interface OwnProps {
   onConnected: () => void;
