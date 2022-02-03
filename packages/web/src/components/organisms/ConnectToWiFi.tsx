@@ -8,7 +8,6 @@ import {
   Form,
   Container,
   Collapse,
-  Alert,
   Spinner,
 } from "react-bootstrap";
 
@@ -19,6 +18,7 @@ import WiFiNetwork from "components/molecules/WiFiNetwork";
 import LoadingButton from "components/atoms/LoadingButton";
 
 import { getWifis, setWifi } from "api";
+import { useAlert } from "hooks/useAlert";
 
 interface OwnProps {
   onConnected: () => void;
@@ -27,6 +27,8 @@ interface OwnProps {
 type ConnectToWiFiProps = OwnProps;
 
 const ConnectToWiFi: React.FC<ConnectToWiFiProps> = ({ onConnected }) => {
+  const { addAlert } = useAlert();
+
   const [networks, setNetworks] = useState<WifiNetwork[]>([]);
   const [selectedNetwork, setSelectedNetwork] = useState<number | null>(null);
   const [password, setPassword] = useState("");
@@ -48,6 +50,19 @@ const ConnectToWiFi: React.FC<ConnectToWiFiProps> = ({ onConnected }) => {
   useEffect(() => {
     loadWifis();
   }, [loadWifis]);
+
+  useEffect(() => {
+    const show = !!error && !connected;
+
+    if (!show) return;
+
+    const message =
+      selectedNetwork !== null
+        ? `Can't connect to ${networks[selectedNetwork].ssid}. Error: ${error}`
+        : error;
+
+    addAlert({ message, variant: "danger", autoClose: true });
+  }, [addAlert, error, connected, selectedNetwork, networks]);
 
   const onPassChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.currentTarget.value);
@@ -122,25 +137,6 @@ const ConnectToWiFi: React.FC<ConnectToWiFiProps> = ({ onConnected }) => {
     );
   };
 
-  const renderError = () => {
-    const show = !!error && !connected;
-
-    const errorText =
-      selectedNetwork !== null
-        ? `Can't connect to ${networks[selectedNetwork].ssid}. Error: ${error}`
-        : error;
-
-    return (
-      <Row>
-        <Collapse in={show}>
-          <Container>
-            <Alert variant="danger">{errorText}</Alert>
-          </Container>
-        </Collapse>
-      </Row>
-    );
-  };
-
   const renderButton = () => {
     const show = selectedNetwork !== null && !connected;
 
@@ -159,7 +155,6 @@ const ConnectToWiFi: React.FC<ConnectToWiFiProps> = ({ onConnected }) => {
     <Col>
       {renderWiFiSelect()}
       {renderPasswordField()}
-      {renderError()}
       {renderButton()}
     </Col>
   );

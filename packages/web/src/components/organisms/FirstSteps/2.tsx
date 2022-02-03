@@ -5,6 +5,8 @@ import LoadingButton from "components/atoms/LoadingButton";
 import ConnectToESP from "components/organisms/ConnectToESP";
 
 import { findESP, getIP } from "api/findESP";
+import { useEffect } from "react";
+import { useAlert } from "hooks/useAlert";
 
 interface OwnProps {
   home?: boolean;
@@ -15,12 +17,24 @@ interface OwnProps {
 type StepProps = OwnProps;
 
 const Step: React.FC<StepProps> = ({ home, onDone, goBack }) => {
+  const { addAlert } = useAlert();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [answer, setAnswer] = useState(false);
   const [ip, setIP] = useState("");
 
   const wifiType = home ? "home" : "ESP";
+
+  useEffect(() => {
+    if (error) {
+      addAlert({
+        message: "Can't connect to ESP",
+        variant: "danger",
+        autoClose: true,
+      });
+    }
+  }, [addAlert, error]);
 
   const onConnect = async (manualIP?: string) => {
     setLoading(true);
@@ -35,6 +49,8 @@ const Step: React.FC<StepProps> = ({ home, onDone, goBack }) => {
     setLoading(false);
 
     if (success) {
+      localStorage.setItem("ip", _ip);
+
       setError(false);
       setIP(_ip);
     } else {
@@ -84,7 +100,6 @@ const Step: React.FC<StepProps> = ({ home, onDone, goBack }) => {
     return (
       <Collapse in={show} mountOnEnter unmountOnExit>
         <div>
-          <Alert variant="danger">Can't connect to ESP :(</Alert>
           {renderError1()}
           {renderError2()}
         </div>

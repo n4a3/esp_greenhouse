@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Card, Container, Nav, Navbar, NavbarBrand } from "react-bootstrap";
+import {
+  Card,
+  Collapse,
+  Container,
+  Nav,
+  Navbar,
+  NavbarBrand,
+} from "react-bootstrap";
 
 import { steps } from "components/organisms/FirstSteps";
 
@@ -19,13 +26,26 @@ const Start: React.FC<StartProps> = () => {
   };
 
   const renderStepsList = () =>
-    steps.map(({ name }, i) => (
-      <Nav.Item key={i}>
-        <Nav.Link eventKey={i} as="p">
-          {name}
-        </Nav.Link>
-      </Nav.Item>
-    ));
+    steps.map(({ name }, i) => {
+      const render = i === activeStep || i === activeStep + 1;
+
+      const classNames =
+        i === activeStep
+          ? "flex-grow-1 flex-shrink-0"
+          : "flex-grow-0 flex-shrink-1";
+
+      // if (!render) return null;
+
+      return (
+        <Nav.Item key={i} className={`text-nowrap text-truncate ${classNames}`}>
+          <Collapse dimension="width" in={render}>
+            <Nav.Link eventKey={i} as="div">
+              {name}
+            </Nav.Link>
+          </Collapse>
+        </Nav.Item>
+      );
+    });
 
   const StepComponent = steps[activeStep].Step;
 
@@ -41,7 +61,7 @@ const Start: React.FC<StartProps> = () => {
       </p>
       <Card>
         <Card.Header>
-          <Nav variant="pills" activeKey={activeStep}>
+          <Nav className="flex-nowrap" variant="pills" activeKey={activeStep}>
             {renderStepsList()}
           </Nav>
         </Card.Header>

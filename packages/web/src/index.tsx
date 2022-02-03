@@ -6,12 +6,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import App from "App";
 import reportWebVitals from "reportWebVitals";
+import GlobalAlertProvider from "providers/GlobalAlertProvider";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <GlobalAlertProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </GlobalAlertProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

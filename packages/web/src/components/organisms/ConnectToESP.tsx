@@ -4,6 +4,7 @@ import { Alert, Card, Form, Spinner, Stack } from "react-bootstrap";
 import LoadingButton from "components/atoms/LoadingButton";
 
 import { findESP, getIP } from "api/findESP";
+import { useAlert } from "hooks/useAlert";
 
 interface OwnProps {
   onConnect: (ip: string) => void;
@@ -12,6 +13,8 @@ interface OwnProps {
 type ConnectProps = OwnProps;
 
 const ConnectToESP: React.FC<ConnectProps> = ({ onConnect }) => {
+  const { addAlert } = useAlert();
+
   const [ip, setIP] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -69,6 +72,16 @@ const ConnectToESP: React.FC<ConnectProps> = ({ onConnect }) => {
   useEffect(() => {
     startAutoScan();
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      addAlert({
+        message: "Can't connect to ESP",
+        variant: "danger",
+        autoClose: true,
+      });
+    }
+  }, [addAlert, error]);
 
   const renderStatus = () => {
     console.log(loading, ip);
