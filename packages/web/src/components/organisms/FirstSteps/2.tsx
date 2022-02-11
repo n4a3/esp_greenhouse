@@ -41,12 +41,11 @@ const Step: React.FC<StepProps> = ({ home, onDone, goBack }) => {
 
     const lsIP = localStorage.getItem("ip");
     const _ip = lsIP || manualIP || (await findESP());
-
-    if (!_ip) return;
-
-    const success = (await getIP(_ip)) === _ip;
+    console.log(_ip);
 
     setLoading(false);
+
+    const success = !!_ip && (await getIP(_ip)) === _ip;
 
     if (success) {
       localStorage.setItem("ip", _ip);

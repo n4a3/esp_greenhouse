@@ -57,6 +57,8 @@ const ConnectToESP: React.FC<ConnectProps> = ({ onConnect }) => {
     } else {
       setError(true);
     }
+
+    setLoading(false);
   }, [connect]);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -71,6 +73,7 @@ const ConnectToESP: React.FC<ConnectProps> = ({ onConnect }) => {
 
   useEffect(() => {
     startAutoScan();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -84,7 +87,6 @@ const ConnectToESP: React.FC<ConnectProps> = ({ onConnect }) => {
   }, [addAlert, error]);
 
   const renderStatus = () => {
-    console.log(loading, ip);
     if (loading && !ip) {
       return <Spinner animation="border" variant="primary" />;
     }
